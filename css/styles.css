@@ -261,13 +261,13 @@ nav h1 a {
     border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
-  margin: 0 0 30px;
+  margin: 0 10px 30px;
   overflow: hidden;
   position: relative;
-  width: 100%;
+  width: calc(100% - 20px);
 }
 #reviews-list li p {
-  margin: 0 0 10px;
+  margin: 0 20px 10px;
 }
 #restaurant-hours td {
   color: #666;
@@ -275,25 +275,24 @@ nav h1 a {
 
 #restaurant-img {
   order: -1;
-  width: 100%;
 }
 
 #restaurant-name {
-  width: 30%;
+  width: 100%;
 }
 
 #restaurant-cuisine {
-  order: 1;
-  width: 70%;
-}
-
-#restaurant-address {
   order: 2;
   width: 100%;
 }
 
-#restaurant-hours {
+#restaurant-address {
   order: 3;
+  width: 100%;
+}
+
+#restaurant-hours {
+  order: 4;
   width: 100%;
 }
 
