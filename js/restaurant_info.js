@@ -119,11 +119,24 @@ createReviewHTML = (review) => {
   const li = document.createElement('li');
   const name = document.createElement('p');
   name.innerHTML = review.name;
-  li.appendChild(name);
+  name.style.margin = '0 20px 0';
+  name.style.color = "#FFFFFF";
 
   const date = document.createElement('p');
   date.innerHTML = review.date;
-  li.appendChild(date);
+  date.style.margin = '0 20px 0';
+  date.style.float = 'right';
+  date.style.color = '#A8A6A6';
+
+  const header = document.createElement('div');
+  header.appendChild(name);
+  header.appendChild(date);
+  header.className = 'review-header';
+
+  li.style.borderTopLeftRadius = '20px';
+  li.style.borderBottomRightRadius = '20px';
+
+  li.appendChild(header);
 
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
