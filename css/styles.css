@@ -151,8 +151,9 @@ nav h1 a {
 #restaurants-list .restaurant-img {
   background-color: #ccc;
   display: block;
-  margin: 0;
-  width: 100%;
+  margin: auto;
+  margin-top: 20px;
+  max-width: 100%;
   min-height: 248px;
 }
 #restaurants-list li h1 {
@@ -323,5 +324,6 @@ nav h1 a {
 img, embed, object, video {
   max-width: 100%;
 }
+
 
 /* ====================== Break Points ====================== */
