@@ -121,6 +121,7 @@ createReviewHTML = (review) => {
   name.innerHTML = review.name;
   name.style.margin = '0 20px 0';
   name.style.color = "#FFFFFF";
+  name.style.fontSize = "large";
 
   const date = document.createElement('p');
   date.innerHTML = review.date;
@@ -138,8 +139,19 @@ createReviewHTML = (review) => {
 
   li.appendChild(header);
 
-  const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
+  // const ratingContainer = document.createElement('div');
+  // ratingContainer.style.backgroundColor = "orange";
+  const rating = document.createElement('div');
+  rating.innerHTML = `RATING: ${review.rating}<br/>`;
+  rating.style.color = "#FFFFFF";
+  rating.style.display = "inline-block";
+  rating.style.padding = "5px 10px";
+  rating.style.margin = "10px 20px 10px";
+  rating.style.backgroundColor = "orange";
+  rating.style.borderRadius = "5px";
+  rating.style.fontWeight = "bold";
+
+  // ratingContainer.appendChild(rating);
   li.appendChild(rating);
 
   const comments = document.createElement('p');
