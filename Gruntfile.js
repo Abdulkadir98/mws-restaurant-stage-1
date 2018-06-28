@@ -19,7 +19,7 @@ module.exports = function(grunt) {
         height: 240
       },{
         name: 'medium',
-        width: 640,
+        width: 500,
         quality: 60
       }]
         },
