@@ -193,13 +193,15 @@ nav h1 a {
 .maincontent-container {
   top: 135px;
   position: relative;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .inside #map-container {
   background: blue none repeat scroll 0 0;
   height: 87%;
-  display: none;
-  position: fixed;
+  display: block;
+  height: 400px;
   right: 0;
   top: 80px;
   width: 100%;
@@ -212,6 +214,7 @@ nav h1 a {
 .inside #footer {
   bottom: 0;
   position: absolute;
+  margin-top: 20px;
   width: 100%;
 }
 #restaurant-name {
@@ -318,6 +321,10 @@ nav h1 a {
 #restaurant-hours {
   order: 4;
   width: 100%;
+}
+
+section:nth-last-child(1) {
+  margin-bottom: 20px;
 }
 
 img, embed, object, video {
