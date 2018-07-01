@@ -228,11 +228,6 @@ nav h1 a {
   line-height: 1.1;
 }
 
-#restaurant-img {
-  max-width: 100%;
-
-}
-
 #restaurant-address {
   font-size: 12pt;
   margin: 10px 0px;
@@ -337,5 +332,23 @@ img, embed, object, video {
   img {
     width: 800px;
     margin: auto;
+  }
+
+  #restaurants-list li h1 {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  #restaurants-list li p {
+    width: 800px;
+    margin: auto;
+  }
+
+  .view-details-btn {
+    width: 800px;
+    margin:auto;
   }
 }
