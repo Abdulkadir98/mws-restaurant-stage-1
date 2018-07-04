@@ -1,6 +1,6 @@
-self.addEventListener('install', function(event) {
+var staticCacheName = 'mws-static-v1';
 
-  let urlsToCache = [
+let urlsToCache = [
     '/',
     '/js/main.js',
     '/js/restaurant_info.js',
@@ -12,18 +12,51 @@ self.addEventListener('install', function(event) {
   ];
 
 
+self.addEventListener('install', function(event) {
+
   event.waitUntil(
-    caches.open('mws-static-v1').then(function(cache) {
+    caches.open(staticCacheName).then(function(cache) {
         return cache.addAll(urlsToCache);
     })
   );
 });
 
+self.addEventListener('activate', function() {
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.filter(function(cacheName) {
+            return cacheName.startsWith('mws') &&
+            cacheName != staticCacheName;
+        }).map(function(cacheName) {
+            return cache.delete(cacheName);
+        })
+
+      );
+    })
+
+
+  );
+});
+
+
 self.addEventListener('fetch', function(event) {
 
   event.respondWith(
     caches.match(event.request).then(function(response) {
-        return response || fetch(event.request);
+        if(response) return response;
+
+        return fetch(event.request).then(function(response) {
+            if (response.status === 404) {
+            return new Response('Page not Found');
+          }
+          // return caches.open(staticCacheName).then(function(cache) {
+          //   cache.put(event.request.url, response.clone());
+          //   return response;
+          // });
+        });
+    }).catch(function(err) {
+        console.log('Error', err);
     })
   );
 
