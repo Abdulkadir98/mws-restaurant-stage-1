@@ -8,8 +8,8 @@ class DBHelper {
    * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
-    const port = 8000 // Change this to your server port
-    return `http://localhost:${port}/data/restaurants.json`;
+    const port = 1337 // Change this to your server port
+    return `http://localhost:${port}/restaurants`;
   }
 
   /**
@@ -30,7 +30,7 @@ class DBHelper {
     // };
     // xhr.send();
 
-    fetch('http://localhost:1337/restaurants')
+    fetch(DBHelper.DATABASE_URL)
     .then(response => response.json())
     .then(function(restaurants){
       console.log(restaurants);
@@ -160,7 +160,10 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
+    if(restaurant.photograph)
     return (`/images/${restaurant.photograph}.jpg`);
+    else
+      return('images/10.jpg')
   }
 
   /**
@@ -176,5 +179,19 @@ class DBHelper {
     );
     return marker;
   }
+
+}
+
+function openDatabase() {
+  if(!navigator.serviceWorker)
+    return Promise.resolve();
+
+  return idb.open('mws', 1, function(upgradeDb){
+    let store = upgradeDb.createObjectStore('restaurants', {
+      keypath: 'id'
+    });
+
+});
+
 
 }

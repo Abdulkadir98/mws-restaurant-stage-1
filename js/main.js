@@ -1,3 +1,4 @@
+
 let restaurants,
   neighborhoods,
   cuisines
@@ -112,6 +113,14 @@ updateRestaurants = () => {
     } else {
       resetRestaurants(restaurants);
       fillRestaurantsHTML();
+
+      openDatabase().then(function(db){
+        if(!db) return;
+        let tx = db.transaction('restaurants', 'readwrite');
+        let store = tx.objectStore('restaurants');
+        for(restaurant of restaurants)
+          store.put(restaurant);
+      });
     }
   })
 }
@@ -195,4 +204,18 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     });
     self.markers.push(marker);
   });
+}
+
+function openDatabase() {
+  if(!navigator.serviceWorker)
+    return Promise.resolve();
+
+  return idb.open('mws', 1, function(upgradeDb){
+    let store = upgradeDb.createObjectStore('restaurants', {
+      keyPath: 'id'
+    });
+
+});
+
+
 }
