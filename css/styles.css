@@ -282,6 +282,16 @@ nav h1 a {
   background-color: #3B3838;
 }
 
+.rating-container {
+  color: #FFFFFF;
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 10px 20px 10px;
+  background-color: orange;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
 #restaurant-hours td {
   color: #666;
 }

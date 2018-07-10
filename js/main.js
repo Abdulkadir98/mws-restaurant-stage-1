@@ -5,14 +5,16 @@ let restaurants,
 var map
 var markers = []
 
+var dbPromise = openDatabase();
 
-// if(navigator.serviceWorker) {
-//   navigator.serviceWorker.register('/sw.js').then(function() {
-//     console.log('successfully registered')
-//   }).catch(function() {
-//     console.log('some error occured');
-//   });
-// }
+
+if(navigator.serviceWorker) {
+  navigator.serviceWorker.register('/sw.js').then(function() {
+    console.log('successfully registered')
+  }).catch(function() {
+    console.log('some error occured');
+  });
+}
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -114,7 +116,7 @@ updateRestaurants = () => {
       resetRestaurants(restaurants);
       fillRestaurantsHTML();
 
-      openDatabase().then(function(db){
+      dbPromise.then(function(db){
         if(!db) return;
         let tx = db.transaction('restaurants', 'readwrite');
         let store = tx.objectStore('restaurants');

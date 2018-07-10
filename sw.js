@@ -6,7 +6,7 @@ let urlsToCache = [
     '/js/restaurant_info.js',
     'js/dbhelper.js',
     '/css/styles.css',
-    'data/restaurants.json',
+    'js/lib/idb.js',
     '/restaurant.html'
 
   ];
@@ -50,10 +50,11 @@ self.addEventListener('fetch', function(event) {
             if (response.status === 404) {
             return new Response('Page not Found');
           }
-          // return caches.open(staticCacheName).then(function(cache) {
-          //   cache.put(event.request.url, response.clone());
-          //   return response;
-          // });
+
+          return caches.open(staticCacheName).then(function(cache) {
+            cache.put(event.request.url, response.clone());
+            return response;
+          });
         });
     }).catch(function(err) {
         console.log('Error', err);

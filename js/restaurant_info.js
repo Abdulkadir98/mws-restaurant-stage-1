@@ -144,13 +144,7 @@ createReviewHTML = (review) => {
   // ratingContainer.style.backgroundColor = "orange";
   const rating = document.createElement('div');
   rating.innerHTML = `RATING: ${review.rating}<br/>`;
-  rating.style.color = "#FFFFFF";
-  rating.style.display = "inline-block";
-  rating.style.padding = "5px 10px";
-  rating.style.margin = "10px 20px 10px";
-  rating.style.backgroundColor = "orange";
-  rating.style.borderRadius = "5px";
-  rating.style.fontWeight = "bold";
+  rating.className = 'rating-container';
 
   // ratingContainer.appendChild(rating);
   li.appendChild(rating);
