@@ -16,24 +16,21 @@ class DBHelper {
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    // let xhr = new XMLHttpRequest();
-    // xhr.open('GET', DBHelper.DATABASE_URL);
-    // xhr.onload = () => {
-    //   if (xhr.status === 200) { // Got a success response from server!
-    //     const json = JSON.parse(xhr.responseText);
-    //     const restaurants = json.restaurants;
-    //     callback(null, restaurants);
-    //   } else { // Oops!. Got an error from server.
-    //     const error = (`Request failed. Returned status of ${xhr.status}`);
-    //     callback(error, null);
-    //   }
-    // };
-    // xhr.send();
-
     fetch(DBHelper.DATABASE_URL)
-    .then(response => response.json())
-    .then(function(restaurants){
+    .then((response) => {
+      if(response.ok)
+      return response.json()
+
+    }).then(function(restaurants){
       console.log(restaurants);
+
+      openDatabase().then(function(db){
+        let keyStore = db.transaction('restaurants','readwrite')
+                      .objectStore('restaurants');
+        for(restaurant of restaurants){
+          keyStore.put(restaurant);
+        }
+      });
       callback(null, restaurants);
     }).catch((e) => {
         console.log(e);
@@ -46,17 +43,30 @@ class DBHelper {
    */
   static fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        const restaurant = restaurants.find(r => r.id == id);
-        if (restaurant) { // Got the restaurant
-          callback(null, restaurant);
-        } else { // Restaurant does not exist in the database
-          callback('Restaurant does not exist', null);
-        }
+    // DBHelper.fetchRestaurants((error, restaurants) => {
+    //   if (error) {
+    //     callback(error, null);
+    //   } else {
+    //     const restaurant = restaurants.find(r => r.id == id);
+    //     if (restaurant) { // Got the restaurant
+    //       callback(null, restaurant);
+    //     } else { // Restaurant does not exist in the database
+    //       callback('Restaurant does not exist', null);
+    //     }
+    //   }
+    // });
+    fetch(DBHelper.DATABASE_URL+`/${id}`).then(function(response){
+      if(response.ok)
+        return response.json();
+    }).then(function(restaurant){
+      if(restaurant) {
+        callback(null, restaurant);
       }
+      else {
+        callback('restaurant does not exist', null);
+      }
+    }).catch(function(err){
+      callback(null, restaurant);
     });
   }
 
@@ -192,6 +202,15 @@ function openDatabase() {
     });
 
 });
-
-
 }
+
+var fireEvent = function(name, data) {
+  var e = document.createEvent("Event");
+  e.initEvent(name, true, true);
+  e.data = data;
+  window.dispatchEvent(e);
+};
+
+window.addEventListener("connectionerror", function(e){
+  alert("there is a connection error");
+});
