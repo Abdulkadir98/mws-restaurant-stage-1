@@ -112,10 +112,6 @@ updateRestaurants = () => {
   DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
     if (error) { // Got an error!
       console.error(error);
-      showCachedRestaurants().then(function(restaurants){
-        resetRestaurants(restaurants);
-        fillRestaurantsHTML();
-      });
     } else {
       resetRestaurants(restaurants);
       fillRestaurantsHTML();
@@ -217,10 +213,3 @@ function openDatabase() {
   });
 }
 
-function showCachedRestaurants(){
-  dbPromise.then(function(db){
-    let store = db.transaction('restaurants').objectStore('restaurants');
-
-    return store.getAll();
-  });
-}

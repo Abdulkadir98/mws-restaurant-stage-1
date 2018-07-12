@@ -1,6 +1,8 @@
 /**
  * Common database helper functions.
  */
+
+ var dbPromise = openDatabase();
 class DBHelper {
 
   /**
@@ -127,11 +129,13 @@ class DBHelper {
    * Fetch all neighborhoods with proper error handling.
    */
   static fetchNeighborhoods(callback) {
-    // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
+
+    showCachedRestaurants().then(function(restaurants){
+      DBHelper.fetchRestaurants((error, restaurants) => {
+        if (error) {
         callback(error, null);
-      } else {
+        }
+        else {
         // Get all neighborhoods from all restaurants
         const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
         // Remove duplicates from neighborhoods
@@ -139,6 +143,9 @@ class DBHelper {
         callback(null, uniqueNeighborhoods);
       }
     });
+  });
+    // Fetch all restaurants
+
   }
 
   /**
@@ -146,7 +153,8 @@ class DBHelper {
    */
   static fetchCuisines(callback) {
     // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
+    showCachedRestaurants().then(function(restaurants){
+      DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -157,6 +165,8 @@ class DBHelper {
         callback(null, uniqueCuisines);
       }
     });
+  });
+
   }
 
   /**
@@ -214,3 +224,11 @@ var fireEvent = function(name, data) {
 window.addEventListener("connectionerror", function(e){
   alert("there is a connection error");
 });
+
+function showCachedRestaurants(){
+  dbPromise.then(function(db){
+    let store = db.transaction('restaurants').objectStore('restaurants');
+
+    return store.getAll();
+  });
+}
