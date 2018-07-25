@@ -8,7 +8,6 @@ let urlsToCache = [
     '/css/styles.css',
     'js/lib/idb.js',
     '/restaurant.html'
-
   ];
 
 
@@ -21,7 +20,7 @@ self.addEventListener('install', function(event) {
   );
 });
 
-self.addEventListener('activate', function() {
+self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
