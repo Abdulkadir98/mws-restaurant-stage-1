@@ -7,6 +7,7 @@ let urlsToCache = [
     'js/dbhelper.js',
     '/css/styles.css',
     'js/lib/idb.js',
+    'js/lib/lazy-load.js',
     '/restaurant.html'
   ];
 
@@ -30,11 +31,8 @@ self.addEventListener('activate', function(event) {
         }).map(function(cacheName) {
             return cache.delete(cacheName);
         })
-
       );
     })
-
-
   );
 });
 

@@ -19,7 +19,6 @@ if(navigator.serviceWorker) {
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
-
 });
 
 /**
@@ -147,14 +146,17 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 createRestaurantHTML = (restaurant) => {
-  const defaultImageUrl = DBHelper.imageUrlForRestaurant(restaurant);
+  const imageUrl = DBHelper.imageUrlForRestaurant(restaurant);
+  const placeholderUrl = 'images/1.jpg';
   const li = document.createElement('li');
 
   const image = document.createElement('img');
-  image.className = 'restaurant-img';
-  image.src = defaultImageUrl;
+  image.classList.add('js-lazy-image', 'restaurant-img');
+  image.src = imageUrl;
   image.alt = "restaurant";
-  image.srcset = defaultImageUrl + " 800w, " + defaultImageUrl.slice(0, -4) + "-medium.jpg" + " 500w";
+  //image.srcset = defaultImageUrl + " 800w, " + defaultImageUrl.slice(0, -4) + "-medium.jpg" + " 500w";
+  image.setAttribute('data-src', imageUrl);
+  image.setAttribute('data-srcset', imageUrl + " 800w, " + imageUrl.slice(0, -4) + "-medium.jpg" + " 500w");
 
   li.append(image);
 

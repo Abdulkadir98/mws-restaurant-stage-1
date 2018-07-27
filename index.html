@@ -6,6 +6,23 @@
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <link rel="stylesheet" href="css/styles.css">
   <title>Restaurant Reviews</title>
+  <style>
+    .fade-in {
+      animation-name: fadeIn;
+      animation-duration: 1.3s;
+      animation-timing-function: cubic-bezier(0, 0, 0.4, 1);
+      animation-fill-mode: forwards;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+  </style>
 </head>
 
 <body>
@@ -36,6 +53,7 @@
 
   <script type="text/javascript" charset="utf-8" src="js/lib/idb.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
+  <script src="js/lib/lazy-load.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZH54r0uAZLXHogY2QVcYFmxE5jPt2iIc&libraries=places&callback=initMap"></script>
 
