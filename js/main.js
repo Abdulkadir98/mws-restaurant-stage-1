@@ -152,7 +152,7 @@ createRestaurantHTML = (restaurant) => {
 
   const image = document.createElement('img');
   image.classList.add('js-lazy-image', 'restaurant-img');
-  image.src = imageUrl;
+  image.src = placeholderUrl;
   image.alt = "restaurant";
   //image.srcset = defaultImageUrl + " 800w, " + defaultImageUrl.slice(0, -4) + "-medium.jpg" + " 500w";
   image.setAttribute('data-src', imageUrl);
