@@ -13,6 +13,30 @@ if(navigator.serviceWorker) {
   });
 }
 
+window.addEventListener('load', function(event){
+  var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target;
+          lazyImage.src = lazyImage.dataset.src;
+          lazyImage.srcset = lazyImage.dataset.srcset;
+          lazyImage.classList.remove("lazy");
+          lazyImage.classList.add('fade-in');
+          lazyImageObserver.unobserve(lazyImage);
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage);
+    });
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -151,8 +175,8 @@ createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
 
   const image = document.createElement('img');
-  image.classList.add('js-lazy-image', 'restaurant-img');
-  image.src = placeholderUrl;
+  image.classList.add('lazy', 'restaurant-img');
+  // image.src = placeholderUrl;
   image.alt = "restaurant";
   //image.srcset = defaultImageUrl + " 800w, " + defaultImageUrl.slice(0, -4) + "-medium.jpg" + " 500w";
   image.setAttribute('data-src', imageUrl);
