@@ -180,7 +180,7 @@ createRestaurantHTML = (restaurant) => {
   image.alt = "restaurant";
   //image.srcset = defaultImageUrl + " 800w, " + defaultImageUrl.slice(0, -4) + "-medium.jpg" + " 500w";
   image.setAttribute('data-src', imageUrl);
-  image.setAttribute('data-srcset', imageUrl + " 800w, " + imageUrl.slice(0, -4) + "-medium.jpg" + " 500w");
+  image.setAttribute('data-srcset', imageUrl + " 800w, " + imageUrl.slice(0, -4) + "-medium.webp" + " 500w");
 
   li.append(image);
 
