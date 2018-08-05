@@ -318,7 +318,7 @@ img, embed, object, video {
 }
 
 @media screen and (max-width: 459px) {
-  .filter-options select {
-    width: calc(50% - 20px);
+    .filter-options select{
+    width: 150px;
   }
 }

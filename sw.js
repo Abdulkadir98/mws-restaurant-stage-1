@@ -8,7 +8,8 @@ let urlsToCache = [
     '/css/styles.css',
     'js/lib/idb.js',
     'js/lib/lazy-load.js',
-    '/restaurant.html'
+    '/restaurant.html',
+    '/manifest.json'
   ];
 
 

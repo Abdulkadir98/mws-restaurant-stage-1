@@ -180,13 +180,12 @@ createRestaurantHTML = (restaurant) => {
   image.alt = "restaurant";
   //image.srcset = defaultImageUrl + " 800w, " + defaultImageUrl.slice(0, -4) + "-medium.jpg" + " 500w";
   image.setAttribute('data-src', imageUrl);
-  image.setAttribute('data-srcset', imageUrl + " 800w, " + imageUrl.slice(0, -4) + "-medium.webp" + " 500w");
+  image.setAttribute('data-srcset', imageUrl + " 800w, " + imageUrl.slice(0, -5) + "-medium.webp" + " 500w");
 
   li.append(image);
 
   const name = document.createElement('h1');
   name.innerHTML = restaurant.name;
-  name.setAttribute('id', 'restaurant-name-main');
   li.append(name);
 
   const neighborhood = document.createElement('p');
@@ -202,7 +201,7 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
-  more.setAttribute('aria-label', 'View Details of' + restaurant.name);
+  more.setAttribute('aria-label', 'View Details of ' + restaurant.name);
 
   moreContainer.append(more);
   li.append(moreContainer);
