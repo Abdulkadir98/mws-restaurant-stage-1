@@ -184,13 +184,22 @@ createRestaurantHTML = (restaurant) => {
 
   li.append(image);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   li.append(name);
 
-  const neighborhood = document.createElement('p');
+  const neighborhoodContainer = document.createElement('div');
+  neighborhoodContainer.className = 'neighborhood-container';
+  const neighborhood = document.createElement('div');
   neighborhood.innerHTML = restaurant.neighborhood;
-  li.append(neighborhood);
+  neighborhoodContainer.append(neighborhood);
+
+  const addFavorite = document.createElement('div');
+  addFavorite.innerHTML = 'Add Favorite <img src="images/star-unfilled.svg" style="width:24px; height:24px; margin-left: 8px">';
+  addFavorite.style.cssFloat = 'right';
+  neighborhoodContainer.append(addFavorite);
+
+  li.append(neighborhoodContainer);
 
   const address = document.createElement('p');
   address.innerHTML = restaurant.address;

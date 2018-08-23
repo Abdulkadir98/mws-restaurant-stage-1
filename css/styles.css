@@ -108,7 +108,7 @@ nav h1 a {
   max-width: 100%;
   min-height: 248px;
 }
-#restaurants-list li h1 {
+#restaurants-list li h2 {
   color: #f18200;
   font-family: Arial,sans-serif;
   font-size: 14pt;
@@ -286,7 +286,7 @@ img, embed, object, video {
     margin: auto;
   }
 
-  #restaurants-list li h1 {
+  #restaurants-list li h2 {
     width: 800px;
     margin: 20px auto 10px;
   }
@@ -294,6 +294,16 @@ img, embed, object, video {
   #restaurants-list li p {
     width: 800px;
     margin: auto;
+  }
+
+  .neighborhood-container {
+    width: 800px;
+    margin:auto;
+  }
+
+  .neighborhood-container > img {
+    width: 24px;
+    height: 24px;
   }
 
   .view-details-btn {

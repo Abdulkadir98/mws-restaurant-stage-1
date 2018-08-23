@@ -1,6 +1,6 @@
 let restaurant;
 var map;
-
+let reviewsURL = 'http://localhost:1337/reviews/?restaurant_id=';
 /**
  * Initialize Google map, called from HTML.
  */
@@ -68,7 +68,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     fillRestaurantHoursHTML();
   }
   // fill reviews
-  fillReviewsHTML();
+  fillReviewsHTML(restaurant.id);
 }
 
 /**
@@ -94,13 +94,17 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+fillReviewsHTML = (id) => {
+  let reviews;
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
-
-  if (!reviews) {
+  fetch(reviewsURL + `${id}`).then((response) => {
+    if(response.ok)
+      return response.json()
+  }).then(function(reviews){
+    if (!reviews) {
     const noReviews = document.createElement('p');
     noReviews.innerHTML = 'No reviews yet!';
     container.appendChild(noReviews);
@@ -111,6 +115,9 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     ul.appendChild(createReviewHTML(review));
   });
   container.appendChild(ul);
+  });
+
+
 }
 
 /**
@@ -125,14 +132,14 @@ createReviewHTML = (review) => {
   name.style.fontSize = "large";
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  date.innerHTML = timeConverter(review.updatedAt);
   date.style.margin = '0 20px 0';
   date.style.float = 'right';
   date.style.color = '#A8A6A6';
 
   const header = document.createElement('div');
   header.appendChild(name);
-  header.appendChild(date);
+  //header.appendChild(date);
   header.className = 'review-header';
 
   li.style.borderTopLeftRadius = '20px';
@@ -180,4 +187,17 @@ getParameterByName = (name, url) => {
   if (!results[2])
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp * 1000);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var sec = a.getSeconds();
+  var time = date + ' /' + month + ' /' + year;
+  return time;
 }
