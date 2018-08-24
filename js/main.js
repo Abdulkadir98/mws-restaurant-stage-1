@@ -5,6 +5,7 @@ let restaurants,
 var map
 var markers = []
 
+var dbPromise = openDatabase();
 if(navigator.serviceWorker) {
   navigator.serviceWorker.register('/sw.js').then(function() {
     console.log('successfully registered')
@@ -184,13 +185,28 @@ createRestaurantHTML = (restaurant) => {
 
   li.append(image);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   li.append(name);
 
-  const neighborhood = document.createElement('p');
+  const neighborhoodContainer = document.createElement('div');
+  neighborhoodContainer.className = 'neighborhood-container';
+  const neighborhood = document.createElement('div');
   neighborhood.innerHTML = restaurant.neighborhood;
-  li.append(neighborhood);
+  neighborhoodContainer.append(neighborhood);
+
+  const addFavorite = document.createElement('div');
+  let starImgUrl = '';
+  if(restaurant.is_favorite === 'true')
+    starImgUrl = 'images/star.svg';
+  else
+    starImgUrl = 'images/star-unfilled.svg';
+  addFavorite.innerHTML = `Add Favorite <img src= ${starImgUrl} style="width:24px; height:24px; margin-left: 8px"
+                          onclick="addFavorite(this)" data-id= "${restaurant.id}">`;
+  addFavorite.style.cssFloat = 'right';
+  neighborhoodContainer.append(addFavorite);
+
+  li.append(neighborhoodContainer);
 
   const address = document.createElement('p');
   address.innerHTML = restaurant.address;
@@ -235,3 +251,58 @@ function openDatabase() {
   });
 }
 
+function addFavorite(img) {
+  let restaurant;
+  if(img.getAttribute('src') == 'images/star-unfilled.svg'){
+    fetch(DBHelper.DATABASE_URL + `restaurants/${img.dataset.id}/?is_favorite=true`,{
+      method: "PUT"
+    })
+    .then(function(response){
+          if(response.ok)
+            img.src = 'images/star.svg';
+          dbPromise.then(function(db){
+          db.transaction('restaurants', 'readwrite').objectStore('restaurants')
+              .iterateCursor(cursor => {
+                if(!cursor) return;
+                if(cursor.value.id == img.dataset.id){
+                  let updateData = cursor.value;
+                  updateData.is_favorite = 'true';
+
+                  cursor.update(updateData);
+                }
+                else {
+                  cursor.continue();
+                }
+            });
+          });
+
+        });
+  }
+  else {
+    fetch(DBHelper.DATABASE_URL + `restaurants/${img.dataset.id}/?is_favorite=false`, {
+      method: "PUT"
+    })
+    .then(function(response){
+          if(response.ok)
+            img.src = 'images/star-unfilled.svg';
+
+          dbPromise.then(function(db){
+            db.transaction('restaurants', 'readwrite').objectStore('restaurants')
+              .iterateCursor(cursor => {
+                if(!cursor) return;
+                if(cursor.value.id == img.dataset.id){
+                  let updateData = cursor.value;
+                  updateData.is_favorite = 'false';
+
+                  cursor.update(updateData);
+                }
+                else {
+                  cursor.continue();
+                }
+            });
+          });
+
+
+        });
+      }
+}
