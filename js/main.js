@@ -5,6 +5,7 @@ let restaurants,
 var map
 var markers = []
 
+var dbPromise = openDatabase();
 if(navigator.serviceWorker) {
   navigator.serviceWorker.register('/sw.js').then(function() {
     console.log('successfully registered')
@@ -195,7 +196,13 @@ createRestaurantHTML = (restaurant) => {
   neighborhoodContainer.append(neighborhood);
 
   const addFavorite = document.createElement('div');
-  addFavorite.innerHTML = 'Add Favorite <img src="images/star-unfilled.svg" style="width:24px; height:24px; margin-left: 8px">';
+  let starImgUrl = '';
+  if(restaurant.is_favorite === 'true')
+    starImgUrl = 'images/star.svg';
+  else
+    starImgUrl = 'images/star-unfilled.svg';
+  addFavorite.innerHTML = `Add Favorite <img src= ${starImgUrl} style="width:24px; height:24px; margin-left: 8px"
+                          onclick="addFavorite(this)" data-id= "${restaurant.id}">`;
   addFavorite.style.cssFloat = 'right';
   neighborhoodContainer.append(addFavorite);
 
@@ -244,3 +251,58 @@ function openDatabase() {
   });
 }
 
+function addFavorite(img) {
+  let restaurant;
+  if(img.getAttribute('src') == 'images/star-unfilled.svg'){
+    fetch(DBHelper.DATABASE_URL + `restaurants/${img.dataset.id}/?is_favorite=true`,{
+      method: "PUT"
+    })
+    .then(function(response){
+          if(response.ok)
+            img.src = 'images/star.svg';
+          dbPromise.then(function(db){
+          db.transaction('restaurants', 'readwrite').objectStore('restaurants')
+              .iterateCursor(cursor => {
+                if(!cursor) return;
+                if(cursor.value.id == img.dataset.id){
+                  let updateData = cursor.value;
+                  updateData.is_favorite = 'true';
+
+                  cursor.update(updateData);
+                }
+                else {
+                  cursor.continue();
+                }
+            });
+          });
+
+        });
+  }
+  else {
+    fetch(DBHelper.DATABASE_URL + `restaurants/${img.dataset.id}/?is_favorite=false`, {
+      method: "PUT"
+    })
+    .then(function(response){
+          if(response.ok)
+            img.src = 'images/star-unfilled.svg';
+
+          dbPromise.then(function(db){
+            db.transaction('restaurants', 'readwrite').objectStore('restaurants')
+              .iterateCursor(cursor => {
+                if(!cursor) return;
+                if(cursor.value.id == img.dataset.id){
+                  let updateData = cursor.value;
+                  updateData.is_favorite = 'false';
+
+                  cursor.update(updateData);
+                }
+                else {
+                  cursor.continue();
+                }
+            });
+          });
+
+
+        });
+      }
+}
