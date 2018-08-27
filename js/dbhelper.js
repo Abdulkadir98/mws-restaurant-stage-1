@@ -57,7 +57,7 @@ class DBHelper {
   static fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
 
-    fetch(DBHelper.DATABASE_URL+`/${id}`).then(function(response){
+    fetch(DBHelper.DATABASE_URL+`restaurants/${id}`).then(function(response){
       if(response.ok)
         return response.json();
     }).then(function(restaurant){

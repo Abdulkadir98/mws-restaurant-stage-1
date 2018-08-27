@@ -202,7 +202,8 @@ createRestaurantHTML = (restaurant) => {
   else
     starImgUrl = 'images/star-unfilled.svg';
   addFavorite.innerHTML = `Add Favorite <img src= ${starImgUrl} style="width:24px; height:24px; margin-left: 8px"
-                          onclick="addFavorite(this)" data-id= "${restaurant.id}">`;
+                          onclick="addFavorite(this)" data-id= "${restaurant.id}"
+                          alt="mark ${restaurant.name} as favorite." tabindex="0">`;
   addFavorite.style.cssFloat = 'right';
   neighborhoodContainer.append(addFavorite);
 

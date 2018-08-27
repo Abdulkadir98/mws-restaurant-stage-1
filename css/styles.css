@@ -150,6 +150,10 @@ nav h1 a {
   flex-wrap: wrap;
 }
 
+.inside #maincontent {
+  width: 100%;
+}
+
 .inside #map-container {
   background: blue none repeat scroll 0 0;
   height: 87%;
@@ -164,12 +168,7 @@ nav h1 a {
   height: 100%;
   width: 100%;
 }
-.inside #footer {
-  bottom: 0;
-  position: absolute;
-  margin-top: 20px;
-  width: 100%;
-}
+
 #restaurant-name {
   color: #f18200;
   font-family: Arial,sans-serif;
