@@ -1,6 +1,9 @@
 let restaurant;
 var map;
 let reviewsURL = 'http://localhost:1337/reviews/?restaurant_id=';
+
+let modal = document.getElementById('myModal');
+let span = document.getElementsByClassName('close')[0];
 /**
  * Initialize Google map, called from HTML.
  */
@@ -111,12 +114,20 @@ fillReviewsHTML = (id) => {
     return;
   }
   const ul = document.getElementById('reviews-list');
-  reviews.forEach(review => {
+  for(const review of reviews){
     ul.appendChild(createReviewHTML(review));
-  });
-  container.appendChild(ul);
-  });
+  }
 
+  container.appendChild(ul);
+  const addReviewBtn = document.createElement('BUTTON');
+  const btnText = document.createTextNode('Add Review');
+  addReviewBtn.className = 'add-review';
+  addReviewBtn.appendChild(btnText);
+
+  addReviewBtn.addEventListener('click', addReview);
+
+  container.appendChild(addReviewBtn);
+  });
 
 }
 
@@ -187,6 +198,20 @@ getParameterByName = (name, url) => {
   if (!results[2])
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function addReview(){
+  modal.style.display = 'block';
+
+  span.onclick = function() {
+    modal.style.display = 'none';
+  }
+
+}
+
+window.onclick = function(event){
+  if(event.target == modal)
+    modal.style.display = 'none';
 }
 
 function timeConverter(UNIX_timestamp){
