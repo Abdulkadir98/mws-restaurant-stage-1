@@ -43,6 +43,40 @@
     font-size: 16px;
     margin: 0px 0px 12px 8px;
 }
+
+  input[type=text], textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+
+.cancelbtn {
+    padding: 14px 20px;
+    background-color: #f44336;
+}
+
+
+.cancelbtn,.savebtn {float:left;width:50%}
+
+
+.container {
+    padding: 16px;
+}
 /* The Modal (background) */
   .modal {
       display: none; /* Hidden by default */
@@ -55,24 +89,32 @@
       overflow: auto; /* Enable scroll if needed */
       background-color: rgb(0,0,0); /* Fallback color */
       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      padding-top: 120px;
   }
 
   /* Modal Content/Box */
   .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto; /* 15% from the top and centered */
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%; /* Could be more or less, depending on screen size */
+    background-color: #fefefe;
+    margin: 5% auto 15% auto;
+    border: 1px solid #888;
+    width: 80%; /* could be more or less, depending on screen size */
   }
 
   /* The Close Button */
   .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
+    position: absolute;
+    right: 30px;
+    top: 120px;
+    color: #000;
+    font-size: 40px;
+    font-weight: bold;
   }
+
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
 
   .close:hover,
   .close:focus {
@@ -107,8 +149,24 @@
 
       <!-- Modal content -->
       <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
+      <span onclick="document.getElementById('myModal').style.display='none'" class="close" title="Close Modal">x</span>
+        <div class="modal-content animate">
+          <div class="container">
+            <label><b>Name</b></label>
+            <input type="text" placeholder="Enter Name" name="name" id="name" required>
+
+            <label><b>Rating</b></label>
+            <input type="text" placeholder="Enter Rating" name="rating" id="rating" required>
+
+            <textarea rows="5" cols="100" name="comment" id="comment">
+            Enter comments here...</textarea>
+
+            <div class="clearfix">
+              <button type="button" onclick="document.getElementById('myModal').style.display='none'" class="cancelbtn">Cancel</button>
+              <button type="submit" class="savebtn" id="savebtn">Add review</button>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>

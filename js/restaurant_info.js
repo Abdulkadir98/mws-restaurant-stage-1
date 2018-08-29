@@ -1,6 +1,7 @@
 let restaurant;
 var map;
 let reviewsURL = 'http://localhost:1337/reviews/?restaurant_id=';
+let id;
 
 let modal = document.getElementById('myModal');
 let span = document.getElementsByClassName('close')[0];
@@ -31,7 +32,7 @@ fetchRestaurantFromURL = (callback) => {
     callback(null, self.restaurant)
     return;
   }
-  const id = getParameterByName('id');
+   id = getParameterByName('id');
   if (!id) { // no id found in URL
     error = 'No restaurant id in URL'
     callback(error, null);
@@ -142,11 +143,11 @@ createReviewHTML = (review) => {
   name.style.color = "#FFFFFF";
   name.style.fontSize = "large";
 
-  const date = document.createElement('p');
-  date.innerHTML = timeConverter(review.updatedAt);
-  date.style.margin = '0 20px 0';
-  date.style.float = 'right';
-  date.style.color = '#A8A6A6';
+  // const date = document.createElement('p');
+  // date.innerHTML = timeConverter(review.updatedAt);
+  // date.style.margin = '0 20px 0';
+  // date.style.float = 'right';
+  // date.style.color = '#A8A6A6';
 
   const header = document.createElement('div');
   header.appendChild(name);
@@ -203,8 +204,38 @@ getParameterByName = (name, url) => {
 function addReview(){
   modal.style.display = 'block';
 
-  span.onclick = function() {
-    modal.style.display = 'none';
+  let saveBtn = document.getElementById('savebtn');
+  savebtn.onclick = function() {
+
+    const restaurant_id = id;
+    const name = document.getElementById('name').value;
+    const rating = document.getElementById('rating').value;
+    const comments = document.getElementById('comment').value;
+
+    let data = {
+    restaurant_id,
+    name,
+    rating,
+    comments
+  }
+
+  fetch(DBHelper.DATABASE_URL+'reviews/', {
+    method: "POST",
+    mode:"cors",
+    credentials: "same-origin",
+    headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(data),
+
+  }).then(function(response){
+    if(response.ok){
+      modal.style.display = 'none';
+      return response.json();
+    }
+  }).then(function(data){
+    console.log(data);
+  });
   }
 
 }
@@ -212,17 +243,4 @@ function addReview(){
 window.onclick = function(event){
   if(event.target == modal)
     modal.style.display = 'none';
-}
-
-function timeConverter(UNIX_timestamp){
-  var a = new Date(UNIX_timestamp * 1000);
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var year = a.getFullYear();
-  var month = months[a.getMonth()];
-  var date = a.getDate();
-  var hour = a.getHours();
-  var min = a.getMinutes();
-  var sec = a.getSeconds();
-  var time = date + ' /' + month + ' /' + year;
-  return time;
 }
