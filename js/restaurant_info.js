@@ -212,30 +212,35 @@ function addReview(){
     const rating = document.getElementById('rating').value;
     const comments = document.getElementById('comment').value;
 
-    let data = {
-    restaurant_id,
-    name,
-    rating,
-    comments
-  }
+    if(name.length >0 && rating.length>0 && comments.length>0){
+      let data = {
+        restaurant_id,
+        name,
+        rating,
+        comments
+      }
 
-  fetch(DBHelper.DATABASE_URL+'reviews/', {
-    method: "POST",
-    mode:"cors",
-    credentials: "same-origin",
-    headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(data),
+      fetch(DBHelper.DATABASE_URL+'reviews/', {
+        method: "POST",
+        mode:"cors",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: JSON.stringify(data),
 
-  }).then(function(response){
-    if(response.ok){
-      modal.style.display = 'none';
-      return response.json();
+      }).then(function(response){
+        if(response.ok){
+          modal.style.display = 'none';
+          return response.json();
+        }
+        else{
+          console.log('Enter proper data');
+        }
+      }).then(function(data){
+        console.log(data);
+      });
     }
-  }).then(function(data){
-    console.log(data);
-  });
   }
 
 }
