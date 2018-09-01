@@ -193,7 +193,42 @@ class DBHelper {
     return marker;
   }
 
+  static fetchReviewsByRestId(id) {
+    return fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${id}`)
+    .then(response => response.json())
+    .then(reviews => {
+      dbPromise.then(db => {
+        if(!db) return;
+
+        let tx = db.transaction('reviews', 'readwrite');
+        const store = tx.objectStore('reviews');
+        for(const review of reviews)
+          store.put(review);
+      });
+      console.log('Restaurant revs are', reviews);
+      return Promise.resolve(reviews);
+    }).catch((error) => {
+      return DBHelper.getStoredObjectById('reviews', 'restaurant', id)
+      .then(storedReviews => {
+        console.log('Looking for stored reviews', storedReviews);
+        return Promise.resolve(storedReviews);
+      })
+    });
+  }
+
+  static getStoredObjectById(table, index, id){
+    return dbPromise.then(function(db){
+      if(!db) return;
+
+      const store = db.transaction(table).objectStore(table);
+      const indexId = store.index(index);
+      return indexId.getAll(id);
+    });
+  }
+
 }
+
+
 
 
 function openDatabase() {
@@ -204,6 +239,11 @@ function openDatabase() {
     let store = upgradeDb.createObjectStore('restaurants', {
       keyPath: 'id'
     });
+
+    const reviewsStore = upgradeDb.createObjectStore('reviews', {
+      keyPath: 'id'
+    });
+    reviewsStore.createIndex('restaurant', 'restaurant_id');
 
 });
 }

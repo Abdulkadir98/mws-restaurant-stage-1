@@ -152,22 +152,29 @@ button {
       <!-- Modal content -->
       <div class="modal-content">
       <span onclick="document.getElementById('myModal').style.display='none'" class="close" title="Close Modal">x</span>
-        <div class="modal-content animate">
+        <form class="modal-content animate" id="review-form">
           <div class="container" style="background-color: white">
-            <label><b>Name</b></label>
+            <label for="name"><b>Name</b></label>
             <input type="text" placeholder="Enter Name" name="name" id="name" required>
-
-            <label><b>Rating</b></label>
-            <input type="text" placeholder="Enter Rating" name="rating" id="rating" required>
-            <label><b>Comments</b></label>
+            <div class="rating-container-form">
+              <p><b>Rating</b></p>
+              <select aria-label="Rating select" id="rating" name="Rating" style="width: 100%">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              </select>
+            </div><br/>
+            <label for="comment"><b>Comments</b></label>
             <textarea rows="5" cols="100" name="comment" id="comment"></textarea>
 
             <div class="clearfix">
               <button type="button" onclick="document.getElementById('myModal').style.display='none'" class="cancelbtn">Cancel</button>
-              <button type="submit" class="savebtn" id="savebtn">Add review</button>
+              <button class="savebtn" id="savebtn">Add review</button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
 
     </div>

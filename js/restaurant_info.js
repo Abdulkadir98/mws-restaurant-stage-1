@@ -104,10 +104,8 @@ fillReviewsHTML = (id) => {
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
-  fetch(reviewsURL + `${id}`).then((response) => {
-    if(response.ok)
-      return response.json()
-  }).then(function(reviews){
+  DBHelper.fetchReviewsByRestId(id)
+  .then(function(reviews){
     if (!reviews) {
     const noReviews = document.createElement('p');
     noReviews.innerHTML = 'No reviews yet!';
@@ -120,7 +118,7 @@ fillReviewsHTML = (id) => {
   }
 
   container.appendChild(ul);
-  const addReviewBtn = document.createElement('BUTTON');
+  const addReviewBtn = document.createElement('button');
   const btnText = document.createTextNode('Add Review');
   addReviewBtn.className = 'add-review';
   addReviewBtn.appendChild(btnText);
@@ -201,15 +199,17 @@ getParameterByName = (name, url) => {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
-function addReview(){
+function addReview(event){
+
   modal.style.display = 'block';
 
   let saveBtn = document.getElementById('savebtn');
-  savebtn.onclick = function() {
+  savebtn.onclick = function(event) {
+    event.preventDefault();
 
     const restaurant_id = id;
     const name = document.getElementById('name').value;
-    const rating = document.getElementById('rating').value;
+    const rating = document.querySelector('#rating option:checked').value;
     const comments = document.getElementById('comment').value;
 
     if(name.length >0 && rating.length>0 && comments.length>0){
@@ -237,8 +237,9 @@ function addReview(){
         else{
           console.log('Enter proper data');
         }
-      }).then(function(data){
-        console.log(data);
+      }).then(function(review){
+        console.log(review);
+        document.getElementById('review-form').reset();
       });
     }
   }
