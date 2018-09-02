@@ -219,31 +219,19 @@ function addReview(event){
         rating,
         comments
       }
-
-      fetch(DBHelper.DATABASE_URL+'reviews/', {
-        method: "POST",
-        mode:"cors",
-        credentials: "same-origin",
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-          body: JSON.stringify(data),
-
-      }).then(function(response){
-        if(response.ok){
-          modal.style.display = 'none';
-          return response.json();
-        }
-        else{
-          console.log('Enter proper data');
-        }
-      }).then(function(review){
-        console.log(review);
+        DBHelper.addReview(data);
+        addReviewHtml(data);
+        modal.style.display = 'none';
         document.getElementById('review-form').reset();
-      });
+
     }
   }
 
+}
+
+function addReviewHtml(review){
+  const ul = document.getElementById('reviews-list');
+  ul.appendChild(createReviewHTML(review));
 }
 
 window.onclick = function(event){

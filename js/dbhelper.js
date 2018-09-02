@@ -226,6 +226,60 @@ class DBHelper {
     });
   }
 
+  static addReview(review){
+
+    let offline_obj = {
+      name: 'addReview',
+      data: review,
+      object_type:'review'
+    };
+
+    if(!navigator.onLine && (offline_obj.name === 'addReview')){
+      DBHelper.sendDataWhenOnline(offline_obj);
+      return;
+    }
+
+    var fetch_options = {
+      method: 'POST',
+      body: JSON.stringify(review),
+      headers: new Headers({
+        'Content-Type':'application/json'
+      })
+    };
+
+    fetch(DBHelper.DATABASE_URL+'reviews/', fetch_options).then(response => {
+      if(response.ok)
+        return response.json();
+      else
+        console.log('Enter proper data');
+    }).then(data => {console.log('Review added successfully', data)})
+      .catch(error => {console.log('error', error)});
+  }
+
+  static sendDataWhenOnline(offline_obj){
+    console.log('Offline obj', offline_obj);
+
+    localStorage.setItem('data', JSON.stringify(offline_obj.data));
+    console.log(`Local storage: ${offline_obj.object_type} stored`);
+
+    window.addEventListener('online', (event) => {
+      console.log('Browser online again');
+      let data = JSON.parse(localStorage.getItem('data'));
+
+      if(data !== null)
+        console.log(data);
+      if(offline_obj.name === 'addReview'){
+        DBHelper.addReview(offline_obj.data);
+      }
+
+      console.log('Local data sent to api');
+
+      localStorage.removeItem('data');
+      console.log(`Local storage: ${offline_obj.object_type} removed `);
+
+    });
+  }
+
 }
 
 
