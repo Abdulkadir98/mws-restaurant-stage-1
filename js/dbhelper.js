@@ -192,6 +192,38 @@ class DBHelper {
     );
     return marker;
   }
+  static updateFavoriteStatus(restaurantId, isFavorite) {
+    console.log('Changing status to', isFavorite);
+
+    fetch(DBHelper.DATABASE_URL + `restaurants/${restaurantId}/?is_favorite=${isFavorite}`,{
+      method: "PUT"
+    })
+    .then(function(response){
+          if(response.ok)
+          dbPromise.then(function(db){
+          db.transaction('restaurants', 'readwrite').objectStore('restaurants')
+              .iterateCursor(cursor => {
+                if(!cursor) return;
+                if(cursor.value.id == restaurantId){
+                  let updateData = cursor.value;
+                  if(isFavorite === 'true'){
+                    updateData.is_favorite = 'true';
+                  }
+                  else {
+                    updateData.is_favorite = 'false';
+                  }
+                  cursor.update(updateData);
+                  console.log('Status changed');
+
+                }
+                else {
+                  cursor.continue();
+                }
+            });
+          });
+
+        });
+  }
 
   static fetchReviewsByRestId(id) {
     return fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${id}`)
