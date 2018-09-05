@@ -135,6 +135,8 @@ fillReviewsHTML = (id) => {
  */
 createReviewHTML = (review) => {
   const li = document.createElement('li');
+
+
   const name = document.createElement('p');
   name.innerHTML = review.name;
   name.style.margin = '0 20px 0';
@@ -155,12 +157,22 @@ createReviewHTML = (review) => {
   li.style.borderTopLeftRadius = '20px';
   li.style.borderBottomRightRadius = '20px';
 
+  if(!navigator.onLine){
+    const connection_status = document.createElement('p');
+    connection_status.classList.add('offline_label');
+    connection_status.innerHTML = '(OFFLINE)';
+    header.appendChild(connection_status);
+    li.classList.add('reviews_offline');
+  }
+
   li.appendChild(header);
+
+
 
   // const ratingContainer = document.createElement('div');
   // ratingContainer.style.backgroundColor = "orange";
   const rating = document.createElement('div');
-  rating.innerHTML = `RATING: ${review.rating}<br/>`;
+  rating.innerHTML = `RATING: ${review.rating}`;
   rating.className = 'rating-container';
 
   // ratingContainer.appendChild(rating);

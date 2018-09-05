@@ -298,6 +298,12 @@ class DBHelper {
       console.log('Browser online again');
       let data = JSON.parse(localStorage.getItem('data'));
 
+     [...document.querySelectorAll('.reviews_offline')]
+     .forEach(el => {
+       el.classList.remove('reviews_offline')
+       el.querySelector('.offline_label').remove()
+     });
+
       if(data !== null)
         console.log(data);
       if(offline_obj.name === 'addReview'){
