@@ -65,9 +65,11 @@ class DBHelper {
         callback(null, restaurant);
       }
       else {
+        console.log('restaurant does not exist');
         callback('restaurant does not exist', null);
       }
     }).catch(function(err){
+      console.log('error', err);
       callback(null, restaurant);
     });
   }
@@ -226,25 +228,52 @@ class DBHelper {
   }
 
   static fetchReviewsByRestId(id) {
-    return fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${id}`)
-    .then(response => response.json())
-    .then(reviews => {
-      dbPromise.then(db => {
-        if(!db) return;
+    // return fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${id}`)
+    // .then(response => response.json())
+    // .then(reviews => {
+    //   dbPromise.then(db => {
+    //     if(!db) return;
 
-        let tx = db.transaction('reviews', 'readwrite');
-        const store = tx.objectStore('reviews');
-        for(const review of reviews)
-          store.put(review);
-      });
-      console.log('Restaurant revs are', reviews);
-      return Promise.resolve(reviews);
-    }).catch((error) => {
-      return DBHelper.getStoredObjectById('reviews', 'restaurant', id)
-      .then(storedReviews => {
-        console.log('Looking for stored reviews', storedReviews);
-        return Promise.resolve(storedReviews);
-      })
+    //     let tx = db.transaction('reviews', 'readwrite');
+    //     const store = tx.objectStore('reviews');
+    //     for(const review of reviews)
+    //       store.put(review);
+    //   });
+    //   console.log('Restaurant revs are', reviews);
+    //   return Promise.resolve(reviews);
+    // }).catch((error) => {
+    //   return DBHelper.getStoredObjectById('reviews', 'restaurant', id)
+    //   .then(storedReviews => {
+    //     console.log('Looking for stored reviews', storedReviews);
+    //     return Promise.resolve(storedReviews);
+    //   })
+    // });
+
+    return DBHelper.getStoredObjectById('reviews', 'restaurant', id)
+    .then(cachedReviews => {
+      console.log('Looking for stored reviews');
+      if(cachedReviews.length == 0) {
+        console.log('No reviews stored');
+        return fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${id}`)
+        .then(response => response.json())
+        .then(reviews => {
+          dbPromise.then(db => {
+            if(!db) return;
+
+            let keyStore = db.transaction('reviews', 'readwrite')
+                              .objectStore('reviews');
+
+            for(const review of reviews)
+              keyStore.put(review);
+          });
+          console.log('reviews are', reviews);
+          return Promise.resolve(reviews);
+        });
+      }
+      else {
+        console.log('returning cached reviews');
+        return Promise.resolve(cachedReviews);
+      }
     });
   }
 
