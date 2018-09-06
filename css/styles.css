@@ -236,7 +236,8 @@ nav h1 a {
 
 .rating-container {
   color: #FFFFFF;
-  display: inline-block;
+  display: block;
+  width: 85px;
   padding: 5px 10px;
   margin: 10px 20px 10px;
   background-color: orange;

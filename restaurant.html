@@ -12,6 +12,17 @@
   <title>Restaurant Info</title>
   <style>
 
+      .offline_label {
+        display: inline-block;
+        color: white;
+        font-size: large;
+
+      }
+
+      .reviews_offline {
+        border-bottom: 1px solid red;
+      }
+
       a {
         color: orange;
         text-decoration: none;
@@ -31,6 +42,99 @@
       text-align: center;
       text-transform: uppercase;
     }
+    .add-review {
+    background-color: #FFA500;
+    border: none;
+    color: white;
+    padding: 12px 32px;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px 0px 12px 8px;
+}
+
+  input[type=text], textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+.cancelbtn {
+  margin-right: 12px;
+  width: calc(50% - 12px);
+}
+.savebtn {
+  width: calc(50% - 12px);
+}
+.cancelbtn,.savebtn {
+  float:left;
+  background-color: #654321;
+}
+
+
+.container {
+    padding: 16px;
+}
+/* The Modal (background) */
+  .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      padding-top: 120px;
+  }
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #FFA500;
+    margin: 5% auto 15% auto;
+    border: 1px solid #888;
+    width: 80%; /* could be more or less, depending on screen size */
+  }
+
+  /* The Close Button */
+  .close {
+    position: absolute;
+    right: 30px;
+    top: 120px;
+    color: #000;
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+  .close:hover,
+  .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+  }
   </style>
 </head>
 
@@ -53,6 +157,38 @@
   <!-- End header -->
 
   <!-- Beginning main -->
+  <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+      <span onclick="document.getElementById('myModal').style.display='none'" class="close" title="Close Modal">x</span>
+        <form class="modal-content animate" id="review-form">
+          <div class="container" style="background-color: white">
+            <label for="name"><b>Name</b></label>
+            <input type="text" placeholder="Enter Name" name="name" id="name" required>
+            <div class="rating-container-form">
+              <p><b>Rating</b></p>
+              <select aria-label="Rating select" id="rating" name="Rating" style="width: 100%">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              </select>
+            </div><br/>
+            <label for="comment"><b>Comments</b></label>
+            <textarea rows="5" cols="100" name="comment" id="comment"></textarea>
+
+            <div class="clearfix">
+              <button type="button" onclick="document.getElementById('myModal').style.display='none'" class="cancelbtn">Cancel</button>
+              <button class="savebtn" id="savebtn">Add review</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
     <div class="maincontent-container">
     <main id="maincontent">
     <!-- Beginning map -->
@@ -74,7 +210,6 @@
     <div class="reviews-container">
       <ul id="reviews-list"></ul>
     </div>
-
     </section>
 
     <!-- End reviews -->

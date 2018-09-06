@@ -65,9 +65,11 @@ class DBHelper {
         callback(null, restaurant);
       }
       else {
+        console.log('restaurant does not exist');
         callback('restaurant does not exist', null);
       }
     }).catch(function(err){
+      console.log('error', err);
       callback(null, restaurant);
     });
   }
@@ -192,8 +194,159 @@ class DBHelper {
     );
     return marker;
   }
+  static updateFavoriteStatus(restaurantId, isFavorite) {
+    console.log('Changing status to', isFavorite);
+
+    fetch(DBHelper.DATABASE_URL + `restaurants/${restaurantId}/?is_favorite=${isFavorite}`,{
+      method: "PUT"
+    })
+    .then(function(response){
+          if(response.ok)
+          dbPromise.then(function(db){
+          db.transaction('restaurants', 'readwrite').objectStore('restaurants')
+              .iterateCursor(cursor => {
+                if(!cursor) return;
+                if(cursor.value.id == restaurantId){
+                  let updateData = cursor.value;
+                  if(isFavorite === 'true'){
+                    updateData.is_favorite = 'true';
+                  }
+                  else {
+                    updateData.is_favorite = 'false';
+                  }
+                  cursor.update(updateData);
+                  console.log('Status changed');
+
+                }
+                else {
+                  cursor.continue();
+                }
+            });
+          });
+
+        });
+  }
+
+  static fetchReviewsByRestId(id) {
+
+    return DBHelper.getStoredObjectById('reviews', 'restaurant', id)
+    .then(cachedReviews => {
+      console.log('Looking for stored reviews');
+      if(cachedReviews.length == 0) {
+        console.log('No reviews stored');
+        return fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${id}`)
+        .then(response => response.json())
+        .then(reviews => {
+          dbPromise.then(db => {
+            if(!db) return;
+
+            let keyStore = db.transaction('reviews', 'readwrite')
+                              .objectStore('reviews');
+
+            for(const review of reviews)
+              keyStore.put(review);
+          });
+          console.log('reviews are', reviews);
+          return Promise.resolve(reviews);
+        });
+      }
+      else {
+        console.log('returning cached reviews');
+        console.log('cached reviews', cachedReviews);
+        return Promise.resolve(cachedReviews);
+      }
+    });
+  }
+
+  static getStoredObjectById(table, index, id){
+    return dbPromise.then(function(db){
+      if(!db) return;
+
+      const store = db.transaction(table).objectStore(table);
+      const indexId = store.index(index);
+      return indexId.getAll(id);
+    });
+  }
+
+  static addReview(review){
+
+    let offline_obj = {
+      name: 'addReview',
+      data: review,
+      object_type:'review'
+    };
+
+    if(!navigator.onLine && (offline_obj.name === 'addReview')){
+      DBHelper.sendDataWhenOnline(offline_obj);
+      return;
+    }
+
+    var fetch_options = {
+      method: 'POST',
+      body: JSON.stringify(review),
+      headers: new Headers({
+        'Content-Type':'application/json'
+      })
+    };
+
+    fetch(DBHelper.DATABASE_URL+'reviews/', fetch_options).then(response => {
+      if(response.ok)
+        return response.json();
+      else
+        console.log('Enter proper data');
+    }).then(data => {console.log('Review added successfully', data)})
+      .catch(error => {console.log('error', error)});
+  }
+
+  static sendDataWhenOnline(offline_obj){
+    console.log('Offline obj', offline_obj);
+
+    localStorage.setItem('data', JSON.stringify(offline_obj.data));
+    console.log(`Local storage: ${offline_obj.object_type} stored`);
+
+    window.addEventListener('online', (event) => {
+      console.log('Browser online again');
+      let data = JSON.parse(localStorage.getItem('data'));
+
+     [...document.querySelectorAll('.reviews_offline')]
+     .forEach(el => {
+       el.classList.remove('reviews_offline')
+       el.querySelector('.offline_label').remove()
+     });
+
+      if(data !== null)
+        console.log(data);
+      if(offline_obj.name === 'addReview'){
+        DBHelper.addReview(offline_obj.data);
+      }
+
+      console.log('Local data sent to api');
+
+      localStorage.removeItem('data');
+      console.log(`Local storage: ${offline_obj.object_type} removed `);
+
+    });
+  }
+
+  static saveReviewInDb(review) {
+    let dbReview = review;
+    dbReview.restaurant_id = parseInt(review.restaurant_id);
+
+    dbPromise.then(db => {
+      if(!db)
+        console.log('error in accessing db');
+
+      let keyStore = db.transaction('reviews', 'readwrite')
+                        .objectStore('reviews');
+
+      keyStore.add(dbReview);
+    }).catch(err => console.log('error', err));
+
+  }
 
 }
+
+
 
 
 function openDatabase() {
@@ -204,6 +357,11 @@ function openDatabase() {
     let store = upgradeDb.createObjectStore('restaurants', {
       keyPath: 'id'
     });
+
+    const reviewsStore = upgradeDb.createObjectStore('reviews', {
+      autoIncrement: true
+    });
+    reviewsStore.createIndex('restaurant', 'restaurant_id');
 
 });
 }
