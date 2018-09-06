@@ -228,26 +228,6 @@ class DBHelper {
   }
 
   static fetchReviewsByRestId(id) {
-    // return fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${id}`)
-    // .then(response => response.json())
-    // .then(reviews => {
-    //   dbPromise.then(db => {
-    //     if(!db) return;
-
-    //     let tx = db.transaction('reviews', 'readwrite');
-    //     const store = tx.objectStore('reviews');
-    //     for(const review of reviews)
-    //       store.put(review);
-    //   });
-    //   console.log('Restaurant revs are', reviews);
-    //   return Promise.resolve(reviews);
-    // }).catch((error) => {
-    //   return DBHelper.getStoredObjectById('reviews', 'restaurant', id)
-    //   .then(storedReviews => {
-    //     console.log('Looking for stored reviews', storedReviews);
-    //     return Promise.resolve(storedReviews);
-    //   })
-    // });
 
     return DBHelper.getStoredObjectById('reviews', 'restaurant', id)
     .then(cachedReviews => {
@@ -272,6 +252,7 @@ class DBHelper {
       }
       else {
         console.log('returning cached reviews');
+        console.log('cached reviews', cachedReviews);
         return Promise.resolve(cachedReviews);
       }
     });
@@ -347,6 +328,22 @@ class DBHelper {
     });
   }
 
+  static saveReviewInDb(review) {
+    let dbReview = review;
+    dbReview.restaurant_id = parseInt(review.restaurant_id);
+
+    dbPromise.then(db => {
+      if(!db)
+        console.log('error in accessing db');
+
+      let keyStore = db.transaction('reviews', 'readwrite')
+                        .objectStore('reviews');
+
+      keyStore.add(dbReview);
+    }).catch(err => console.log('error', err));
+
+  }
+
 }
 
 
@@ -362,7 +359,7 @@ function openDatabase() {
     });
 
     const reviewsStore = upgradeDb.createObjectStore('reviews', {
-      keyPath: 'id'
+      autoIncrement: true
     });
     reviewsStore.createIndex('restaurant', 'restaurant_id');
 

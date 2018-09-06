@@ -233,6 +233,7 @@ function addReview(event){
       }
         DBHelper.addReview(data);
         addReviewHtml(data);
+        DBHelper.saveReviewInDb(data);
         modal.style.display = 'none';
         document.getElementById('review-form').reset();
 
