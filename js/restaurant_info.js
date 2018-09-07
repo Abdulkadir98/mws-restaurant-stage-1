@@ -223,8 +223,13 @@ function addReview(event){
     const name = document.getElementById('name').value;
     const rating = document.querySelector('#rating option:checked').value;
     const comments = document.getElementById('comment').value;
+    const error = document.querySelector('.error');
 
-    if(name.length >0 && rating.length>0 && comments.length>0){
+    if(name.length >0 && comments.length>0){
+
+      error.innerHTML = "";
+      error.className = "error";
+
       let data = {
         restaurant_id,
         name,
@@ -237,6 +242,10 @@ function addReview(event){
         modal.style.display = 'none';
         document.getElementById('review-form').reset();
 
+    }
+    else {
+        error.innerHTML = "Please enter all the fields!";
+        error.className = "error active";
     }
   }
 

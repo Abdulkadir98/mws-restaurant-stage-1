@@ -16,7 +16,6 @@
         display: inline-block;
         color: white;
         font-size: large;
-
       }
 
       .reviews_offline {
@@ -61,7 +60,11 @@
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
+    font-family: inherit;
+    font-size: 90%;
+    -webkit-appearance: none;
 }
 
 
@@ -111,6 +114,25 @@ button {
     margin: 5% auto 15% auto;
     border: 1px solid #888;
     width: 80%; /* could be more or less, depending on screen size */
+  }
+  /* This is the style of our error messages */
+  .error {
+    width  : 100%;
+    padding: 0;
+    display: none;
+
+    font-size: 80%;
+    color: white;
+    background-color: #900;
+    border-radius: 0 0 5px 5px;
+
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  .error.active {
+    padding: 0.3em;
+    display: block;
   }
 
   /* The Close Button */
@@ -165,6 +187,7 @@ button {
       <span onclick="document.getElementById('myModal').style.display='none'" class="close" title="Close Modal">x</span>
         <form class="modal-content animate" id="review-form">
           <div class="container" style="background-color: white">
+          <h2 style="padding: 12px 0px;">Add Review</h3>
             <label for="name"><b>Name</b></label>
             <input type="text" placeholder="Enter Name" name="name" id="name" required>
             <div class="rating-container-form">
@@ -177,8 +200,9 @@ button {
               <option value="5">5</option>
               </select>
             </div><br/>
-            <label for="comment"><b>Comments</b></label>
-            <textarea rows="5" cols="100" name="comment" id="comment"></textarea>
+            <label for="comment"><b>Comments:</b></label>
+            <textarea rows="5" name="comment" id="comment"></textarea>
+            <span class="error" aria-live="polite"></span>
 
             <div class="clearfix">
               <button type="button" onclick="document.getElementById('myModal').style.display='none'" class="cancelbtn">Cancel</button>
