@@ -197,12 +197,17 @@ createRestaurantHTML = (restaurant) => {
 
   const addFavorite = document.createElement('button');
 
+
   if(restaurant.is_favorite === 'true'){
     addFavorite.className = 'favorite-btn';
+    addFavorite.setAttribute('aria-label', `mark ${restaurant.name} as unfavorite`);
+
   }
 
   else{
     addFavorite.className = 'unfavorite-btn';
+    addFavorite.setAttribute('aria-label', `mark ${restaurant.name} as favorite`);
+
   }
 
   addFavorite.style.cssFloat = 'right';
