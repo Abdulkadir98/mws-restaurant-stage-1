@@ -5,7 +5,6 @@ let restaurants,
 var map
 var markers = []
 
-var dbPromise = openDatabase();
 if(navigator.serviceWorker) {
   navigator.serviceWorker.register('/sw.js').then(function() {
     console.log('successfully registered')
