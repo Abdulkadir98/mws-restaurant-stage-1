@@ -23,7 +23,7 @@ window.addEventListener('load', function(event){
           let lazyImage = entry.target;
           lazyImage.src = lazyImage.dataset.src;
           lazyImage.srcset = lazyImage.dataset.srcset;
-          lazyImage.classList.remove("lazy");
+          lazyImage.classList.remove('lazy');
           lazyImage.classList.add('fade-in');
           lazyImageObserver.unobserve(lazyImage);
         }
@@ -177,7 +177,7 @@ createRestaurantHTML = (restaurant) => {
   const image = document.createElement('img');
   image.classList.add('lazy', 'restaurant-img');
   // image.src = placeholderUrl;
-  image.alt = restaurant.name;
+  image.alt = `${restaurant.name} located in ${restaurant.address}`;
   //image.srcset = defaultImageUrl + " 800w, " + defaultImageUrl.slice(0, -4) + "-medium.jpg" + " 500w";
   image.setAttribute('data-src', imageUrl);
   image.setAttribute('data-srcset', imageUrl + " 800w, " + imageUrl.slice(0, -5) + "-medium.webp" + " 500w");
