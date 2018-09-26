@@ -8,48 +8,48 @@ For the **Restaurant Reviews** projects, you will incrementally convert a static
 
 ### What I did
 
-###Stage One
+### Stage One
 
-####Responsiveness
+#### Responsiveness
 
 Made changes to the existing code so that the website was responsive on all viewports.
 
-####Accessibility
+#### Accessibility
 
 Added accessibility features - Proper roles were defined for HTML elements and alternate text was provided for all images in the event the images failed to load.
 
-####Progressive Web App principles
+#### Progressive Web App principles
 
 Added service worker to make to cache all assets and the make the website offline-enabled.
 
-###Stage Two
+### Stage Two
 
-####Offline Support
+#### Offline Support
 
 Saved data in indexed DB on first load. Everytime the content was loaded from database when the user was offline.
 
-####Lighthouse Score
+#### Lighthouse Score
 
 Met the following requirements for the project
-* >75 Performance
-* >75 Progressive Web App
-* >90 Accessibility
+* `>75 Performance`
+* `>75 Progressive Web App`
+* `>90 Accessibility`
 
-###Stage Three
+### Stage Three
 
-####Add New Features
+#### Add New Features
 
 1. Designed a form for submission of restaurant review. In the event the user is offline. The review is saved in local storage and when the user gets back online, the review is sent to the server.
 
 2. Added functionality to mark a restaurant as favorite. The change in the status is persisted in the database.
 
-####Lighthouse Score
+#### Lighthouse Score
 
 Met the following requirements for the successful completion of Project
 
-* >90 Performance
-* >90 Progressive Web App
-* >90 Accessibility
+* `>90 Performance`
+* `>90 Progressive Web App`
+* `>90 Accessibility`
 
 
 
