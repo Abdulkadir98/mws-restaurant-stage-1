@@ -6,23 +6,51 @@
 
 For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users.
 
-### Specification
+### What I did
 
-You have been provided the code for a restaurant reviews website. The code has a lot of issues. It’s barely usable on a desktop browser, much less a mobile device. It also doesn’t include any standard accessibility features, and it doesn’t work offline at all. Your job is to update the code to resolve these issues while still maintaining the included functionality. 
+###Stage One
 
-### What do I do from here?
+####Responsiveness
 
-1. In this folder, start up a simple HTTP server to serve up the site files on your local computer. Python has some simple tools to do this, and you don't even need to know Python. For most people, it's already installed on your computer. 
+Made changes to the existing code so that the website was responsive on all viewports.
 
-In a terminal, check the version of Python you have: `python -V`. If you have Python 2.x, spin up the server with `python -m SimpleHTTPServer 8000` (or some other port, if port 8000 is already in use.) For Python 3.x, you can use `python3 -m http.server 8000`. If you don't have Python installed, navigate to Python's [website](https://www.python.org/) to download and install the software.
+####Accessibility
 
-2. With your server running, visit the site: `http://localhost:8000`, and look around for a bit to see what the current experience looks like.
-3. Explore the provided code, and make start making a plan to implement the required features in three areas: responsive design, accessibility and offline use.
-4. Write code to implement the updates to get this site on its way to being a mobile-ready website.
+Added accessibility features - Proper roles were defined for HTML elements and alternate text was provided for all images in the event the images failed to load.
 
-### Note about ES6
+####Progressive Web App principles
 
-Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code. As much as possible, try to maintain use of ES6 in any additional JavaScript you write. 
+Added service worker to make to cache all assets and the make the website offline-enabled.
+
+###Stage Two
+
+####Offline Support
+
+Saved data in indexed DB on first load. Everytime the content was loaded from database when the user was offline.
+
+####Lighthouse Score
+
+Met the following requirements for the project
+* >75 Performance
+* >75 Progressive Web App
+* >90 Accessibility
+
+###Stage Three
+
+####Add New Features
+
+1. Designed a form for submission of restaurant review. In the event the user is offline. The review is saved in local storage and when the user gets back online, the review is sent to the server.
+
+2. Added functionality to mark a restaurant as favorite. The change in the status is persisted in the database.
+
+####Lighthouse Score
+
+Met the following requirements for the successful completion of Project
+
+* >90 Performance
+* >90 Progressive Web App
+* >90 Accessibility
+
 
 
 
