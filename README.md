@@ -51,6 +51,11 @@ Met the following requirements for the successful completion of Project
 * `>90 Progressive Web App`
 * `>90 Accessibility`
 
+View the site live over [here](https://mws-restaurant-reviews.netlify.com/)
+
+#### Note:
+The site only works if run server locally on your machine. Head over to this [repo](https://github.com/udacity/mws-restaurant-stage-3) for the server code and instructions to run it.
+
 
 
 
