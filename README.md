@@ -20,7 +20,7 @@ Added accessibility features - Proper roles were defined for HTML elements and a
 
 #### Progressive Web App principles
 
-Added service worker to make to cache all assets and the make the website offline-enabled.
+Added service worker to cache all assets and to make the website offline-enabled.
 
 ### Stage Two
 
@@ -54,7 +54,7 @@ Met the following requirements for the successful completion of Project
 View the site live over [here](https://mws-restaurant-reviews.netlify.com/)
 
 #### Note:
-The site only works if run server locally on your machine. Head over to this [repo](https://github.com/udacity/mws-restaurant-stage-3) for the server code and instructions to run it.
+The site only works if you run server locally on your machine. Head over to this [repo](https://github.com/udacity/mws-restaurant-stage-3) for the server code and instructions to run it.
 
 
 
